@@ -41,10 +41,21 @@ class App extends Component {
       id: uuidv4(),
       name,
       mobileNo,
-      isFavourite: false,
+      isFavorite: false,
     }
     this.setState(prevState => ({
-      contactList: [...prevState.contactList, newContact],
+      contactsList: [...prevState.contactsList, newContact],
+    }))
+  }
+
+  toggleIsFavourite = id => {
+    this.setState(prevState => ({
+      contactsList: prevState.contactsList.map(eachContact => {
+        if (id === eachContact.id) {
+          return {...eachContact, isFavorite: !eachContact.isFavorite}
+        }
+        return eachContact
+      }),
     }))
   }
 
@@ -86,7 +97,11 @@ class App extends Component {
               <p className="table-header-cell">Mobile Number</p>
             </li>
             {contactsList.map(eachContact => (
-              <ContactItem key={eachContact.id} contactDetails={eachContact} />
+              <ContactItem
+                key={eachContact.id}
+                contactDetails={eachContact}
+                toggleIsFavourite={this.toggleIsFavourite}
+              />
             ))}
           </ul>
         </div>
